@@ -33,13 +33,20 @@ def find_action(name):
 
 
 
-def transfer_anim(context, fileobj):
+def transfer_anim(context, fileobj = None):
 	s = state()
-
 	keyframes = get_keyframes(s.source)
 	source_action = s.source.animation_data.action
-	f = fileobj.name
-	target_action_name = f.split(".",1)[0] # s.target.name + '|' + source_action.name.replace(s.source.name + '|', '')
+	target_action_name = ""
+
+	# Differentiate between baked file names and actions
+	if fileobj is not False:
+		f = fileobj.name
+		target_action_name = f.split(".",1)[0]
+	else:
+		target_action_name = s.target.name + '|' + source_action.name.replace(s.source.name + '|', '')
+
+
 	target_action = find_action(target_action_name)
 
 	if target_action != None:
@@ -75,7 +82,7 @@ class BakeOperator(bpy.types.Operator):
 	bl_label = 'Bake into Action'
 
 	def execute(self, context):
-		transfer_anim(context)
+		transfer_anim(context, None)
 		return {'FINISHED'}
 
 
