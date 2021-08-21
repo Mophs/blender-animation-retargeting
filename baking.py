@@ -73,9 +73,11 @@ def transfer_anim(context, fileobj = None):
 				kp.interpolation = 'LINEAR'
 
 	target_action.use_fake_user = True
-	nla_track = s.target.animation_data.nla_tracks.new()
-	nla_track.strips.new(target_action.name, target_action.frame_range[0], target_action)
-	nla_track.name = target_action.name
+	# Generate NLA tracks with anim names for GLTF Exporter
+	if(s.create_nla_tracks):
+		nla_track = s.target.animation_data.nla_tracks.new()
+		nla_track.strips.new(target_action.name, target_action.frame_range[0], target_action)
+		nla_track.name = target_action.name
 
 class BakeOperator(bpy.types.Operator):
 	bl_idname = 'retarget_baking.bake'

@@ -69,6 +69,7 @@ class MainPanel(bpy.types.Panel):
 						layout.label(text='Options')
 						box = layout.box()
 						box.prop(s, 'disable_drivers', text='Disable Drivers')
+						box.prop(s, 'create_nla_tracks', text='Create NLA Tracks')
 						
 		else:
 			layout.label(text='No armature selected', icon='ERROR')
@@ -100,6 +101,8 @@ class State(bpy.types.PropertyGroup):
 	is_importing: bpy.props.BoolProperty(default=False)
 	bake_step: bpy.props.FloatProperty(default=1.0)
 	bake_linear: bpy.props.BoolProperty(default=False)
+
+	create_nla_tracks: bpy.props.BoolProperty(default=True)
 
 	## UI
 	editing_mappings: bpy.props.BoolProperty(default=False)
