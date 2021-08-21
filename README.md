@@ -48,7 +48,15 @@ For convenience you can bake the source's animation into an action for your targ
 
 Since the target bones are driven by drivers, you can bake everything youself, if you want. Make sure to check 'Visual Keying' if you do so.
 
-Ignore the 'Batch Import & Bake' option. (It covers my personal needs)
+### Batch Import & Bake
+
+~~Ignore the 'Batch Import & Bake' option. (It covers my personal needs)~~
+I have modified this script to support a GLTF baking workflow. The fork changes how actions are named, taking the file name and stripping the file extension out. It then creates NLA tracks with matching names for the baked animations, as required by the GLTF exporter.
+
+To use batch import create a mapping with your source and target skeletons and then ensuring drivers are active use the batch button to select your FBX files containing animations and hit go. Make sure your scene FPS matches your animation FPS. This process can take a long time depending on the number of animations, their frame rate/keyframe density. Afterwards disable drivers and check the animation came through correctly as an action.
+
+Included is an RTCONF file for converting the ready player me avatar (mixamo rig with mixamo: prefix stripped and a different pose), for convenience sake.
+
 
 *Important: After baking your animation, make sure to check 'Disable Drivers' to actually see the keyframes, otherwise the drivers will override any animation on the target.*
 
@@ -56,3 +64,8 @@ Ignore the 'Batch Import & Bake' option. (It covers my personal needs)
 
 - Intended and tested for bipeds with similar anatomy only.
 - Blender's IK system can be weird sometimes
+
+## Possible to do's
+
+- Auto match by hierarchy (traverse rig and match identical rigs with different naming)
+- Auto match bones by name (fuzzy)
