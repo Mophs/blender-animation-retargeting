@@ -33,12 +33,13 @@ def find_action(name):
 
 
 
-def transfer_anim(context):
+def transfer_anim(context, fileobj):
 	s = state()
 
 	keyframes = get_keyframes(s.source)
 	source_action = s.source.animation_data.action
-	target_action_name = s.target.name + '|' + source_action.name.replace(s.source.name + '|', '')
+	f = fileobj.name
+	target_action_name = f.split(".",1)[0] # s.target.name + '|' + source_action.name.replace(s.source.name + '|', '')
 	target_action = find_action(target_action_name)
 
 	if target_action != None:
@@ -65,7 +66,9 @@ def transfer_anim(context):
 				kp.interpolation = 'LINEAR'
 
 	target_action.use_fake_user = True
-
+	nla_track = s.target.animation_data.nla_tracks.new()
+	nla_track.strips.new(target_action.name, target_action.frame_range[0], target_action)
+	nla_track.name = target_action.name
 
 class BakeOperator(bpy.types.Operator):
 	bl_idname = 'retarget_baking.bake'
@@ -126,7 +129,7 @@ class BatchImportOperator(bpy.types.Operator, ImportHelper):
 				s.target.select_set(True)
 				prev = s.source
 				s.selected_source = imported_source
-				transfer_anim(bpy.context)
+				transfer_anim(bpy.context, file)
 				s.selected_source = prev
 				imported_source.animation_data.action = None
 				bpy.data.actions.remove(imported_action)
